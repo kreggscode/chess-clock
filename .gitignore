@@ -93,3 +93,7 @@ Desktop.ini
 # Temporary files
 *.tmp
 *.temp
+
+# Documentation files (only README.md is allowed)
+*.md
+!README.md
