@@ -117,7 +117,7 @@
 chess-clock/
 ├── 📱 app/src/main/
 │   ├── 📋 AndroidManifest.xml      # Permissions & app config
-│   ├── 🏗️ java/com/example/chessclock/
+│   ├── 🏗️ java/com/kreggscode/chessclock/
 │   │   ├── 🎮 MainActivity.kt       # Core game logic & UI
 │   │   ├── ⚙️ SettingsActivity.kt   # Settings management
 │   │   └── 🔊 SoundManager.kt       # Audio system
