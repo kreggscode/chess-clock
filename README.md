@@ -112,8 +112,6 @@
 
 ## 🏗️ Technical Architecture
 
-<div align="center">
-
 ```kotlin
 📁 Project Structure
 chess-clock/
@@ -131,8 +129,6 @@ chess-clock/
 ├── ⚙️ settings.gradle               # Project settings
 └── 🚫 .gitignore                    # Git ignore rules
 ```
-
-</div>
 
 ### 🛠️ Technology Stack
 
