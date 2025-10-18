@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#667eea"
+                android:endColor="#764ba2"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Chess pieces icon -->
+    <item
+        android:width="200dp"
+        android:height="200dp"
+        android:gravity="center">
+        <vector
+            android:width="200dp"
+            android:height="200dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            
+            <!-- King piece -->
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M16.5,18h-9v-2h9V18zM12,2l-1,1v2h-1v2h1v1.5c-1.5,0.5-2.5,1.5-2.5,3.5v3h7v-3c0,-2-1,-3-2.5,-3.5V7h1V5h-1V3L12,2z"/>
+            
+            <!-- Timer circle -->
+            <path
+                android:fillColor="#88C0D0"
+                android:pathData="M12,20c-4.4,0-8-3.6-8-8s3.6-8,8-8s8,3.6,8,8S16.4,20,12,20zM12,6c-3.3,0-6,2.7-6,6s2.7,6,6,6s6-2.7,6-6S15.3,6,12,6z"
+                android:strokeWidth="0.5"
+                android:strokeColor="#FFFFFF"/>
+        </vector>
+    </item>
+</layer-list>

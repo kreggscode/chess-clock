@@ -24,8 +24,8 @@
 |---------|-------------|
 | 🎯 **Dual Timers** | Separate countdown timers for White & Black players |
 | 🔄 **Smart Switching** | Tap your side to stop your timer and start opponent's |
-| ⏱️ **Time Controls** | 5min, 10min, 15min, 30min, 1hr presets + custom time |
-| 📊 **Precision** | 100ms accuracy with tenths display (MM:SS.t) |
+| ⏱️ **Time Controls** | 1, 3, 5, 10, 15, 30, 45, 60, 90 min presets + custom (1-1440 min) |
+| 📊 **Precision** | 100ms accuracy with MM:SS display |
 
 </div>
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Chess Clock</string>
+    
+    <!-- Player Labels -->
+    <string name="white_player">White</string>
+    <string name="black_player">Black</string>
+    
+    <!-- Time Display -->
+    <string name="time_format" formatted="false">%02d:%02d.%d</string>
+    <string name="time_format_simple" formatted="false">%02d:%02d</string>
+    
+    <!-- Buttons -->
+    <string name="start_game">Start Game</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="reset">Reset</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Game States -->
+    <string name="game_ready">Tap to Start</string>
+    <string name="game_paused">Paused</string>
+    <string name="white_wins">White Wins!</string>
+    <string name="black_wins">Black Wins!</string>
+    <string name="your_turn">Your Turn</string>
+    <string name="waiting">Waiting…</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="time_control">Time Control</string>
+    <string name="preset_times">Preset Times</string>
+    <string name="custom_time">Custom Time</string>
+    <string name="audio_settings">Audio Settings</string>
+    <string name="sound_enabled">Sound Effects</string>
+    <string name="vibration_enabled">Vibration</string>
+    <string name="low_time_warning">Low Time Warning</string>
+    <string name="theme_settings">Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="light_theme">Light Theme</string>
+    
+    <!-- Time Presets -->
+    <string name="time_1_min">1 min</string>
+    <string name="time_3_min">3 min</string>
+    <string name="time_5_min">5 min</string>
+    <string name="time_10_min">10 min</string>
+    <string name="time_15_min">15 min</string>
+    <string name="time_30_min">30 min</string>
+    <string name="time_45_min">45 min</string>
+    <string name="time_60_min">60 min</string>
+    <string name="time_90_min">90 min</string>
+    <string name="custom_time_button">Custom</string>
+    <string name="custom_time_title">Custom Time</string>
+    <string name="custom_time_message">Enter time in minutes (1-1440)</string>
+    <string name="custom_time_hint">Minutes</string>
+    
+    <!-- Dialogs -->
+    <string name="reset_dialog_title">Reset Game?</string>
+    <string name="reset_dialog_message">Are you sure you want to reset the game? All progress will be lost.</string>
+    <string name="reset_dialog_confirm">Reset</string>
+    <string name="reset_dialog_cancel">Cancel</string>
+    
+    <!-- Descriptions -->
+    <string name="settings_icon">Settings</string>
+    <string name="pause_icon">Pause</string>
+    <string name="reset_icon">Reset</string>
+    <string name="back_icon">Back</string>
+    
+    <!-- Instructions -->
+    <string name="instructions">Tap your side after making your move</string>
+    <string name="select_time">Select time control to begin</string>
+    
+    <!-- About -->
+    <string name="version">Version 1.0.0</string>
+    <string name="made_with_love">Made with ❤️ for chess players</string>
+</resources>

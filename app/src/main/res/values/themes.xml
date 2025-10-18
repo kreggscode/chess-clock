@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base Application Theme -->
+    <style name="Theme.ChessClock" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary Brand Colors -->
+        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/primary_light</item>
+        <item name="colorOnPrimaryContainer">@color/text_primary</item>
+        
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">@color/md_theme_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
+        
+        <!-- Background Colors -->
+        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground</item>
+        <item name="colorSurface">@color/md_theme_surface</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface</item>
+        
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- Navigation Bar -->
+        <item name="android:navigationBarColor">@color/transparent</item>
+        
+        <!-- Material Components -->
+        <item name="materialButtonStyle">@style/Widget.ChessClock.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.ChessClock.Card</item>
+        
+        <!-- Text Appearance -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.ChessClock.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.ChessClock.Headline2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.ChessClock.Body1</item>
+    </style>
+    
+    <!-- Full Screen Theme -->
+    <style name="Theme.ChessClock.FullScreen" parent="Theme.ChessClock">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    
+    <!-- Button Styles -->
+    <style name="Widget.ChessClock.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="elevation">4dp</item>
+    </style>
+    
+    <style name="Widget.ChessClock.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+    
+    <!-- Card Styles -->
+    <style name="Widget.ChessClock.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">8dp</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+    
+    <!-- Text Appearances -->
+    <style name="TextAppearance.ChessClock.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">96sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+    
+    <style name="TextAppearance.ChessClock.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">48sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="TextAppearance.ChessClock.Body1" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="TextAppearance.ChessClock.Timer" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textSize">72sp</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+    
+    <style name="TextAppearance.ChessClock.PlayerLabel" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors -->
+    <color name="primary">#2E3440</color>
+    <color name="primary_dark">#1A1F2E</color>
+    <color name="primary_light">#3B4252</color>
+    
+    <!-- Accent Colors -->
+    <color name="accent">#88C0D0</color>
+    <color name="accent_light">#A3D4E3</color>
+    <color name="accent_dark">#5E81AC</color>
+    
+    <!-- Player Colors -->
+    <color name="white_player">#ECEFF4</color>
+    <color name="white_player_active">#D8DEE9</color>
+    <color name="white_player_text">#2E3440</color>
+    
+    <color name="black_player">#000000</color>
+    <color name="black_player_active">#1A1A1A</color>
+    <color name="black_player_text">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#A3BE8C</color>
+    <color name="warning">#EBCB8B</color>
+    <color name="error">#BF616A</color>
+    <color name="critical">#D08770</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#1A1F2E</color>
+    <color name="surface">#2E3440</color>
+    <color name="surface_variant">#3B4252</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#ECEFF4</color>
+    <color name="text_secondary">#D8DEE9</color>
+    <color name="text_disabled">#4C566A</color>
+    
+    <!-- Overlay Colors -->
+    <color name="overlay_dark">#80000000</color>
+    <color name="overlay_light">#40FFFFFF</color>
+    
+    <!-- Material Design 3 -->
+    <color name="md_theme_primary">#88C0D0</color>
+    <color name="md_theme_onPrimary">#2E3440</color>
+    <color name="md_theme_secondary">#5E81AC</color>
+    <color name="md_theme_onSecondary">#ECEFF4</color>
+    <color name="md_theme_background">#1A1F2E</color>
+    <color name="md_theme_onBackground">#ECEFF4</color>
+    <color name="md_theme_surface">#2E3440</color>
+    <color name="md_theme_onSurface">#ECEFF4</color>
+    
+    <!-- System Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- Splash Screen Colors -->
+    <color name="splash_background">#1A1F2E</color>
+</resources>

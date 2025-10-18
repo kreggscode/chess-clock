@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".MainActivity">
+
+    <!-- Black Player Area (Top Half - Rotated 180°) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/blackPlayerCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        app:cardBackgroundColor="@color/black_player"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/controlPanel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="180"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <!-- Black Player Label -->
+            <TextView
+                android:id="@+id/blackPlayerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/black_player"
+                android:textColor="@color/black_player_text"
+                android:textSize="@dimen/text_size_label"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="@dimen/spacing_xl"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Black Player Timer -->
+            <TextView
+                android:id="@+id/blackPlayerTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="05:00.0"
+                android:textColor="@color/black_player_text"
+                android:textSize="@dimen/text_size_timer"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.05"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Black Player Status -->
+            <TextView
+                android:id="@+id/blackPlayerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/waiting"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body"
+                android:alpha="0.7"
+                android:layout_marginBottom="@dimen/spacing_xl"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Active Indicator (Glow Effect) -->
+            <View
+                android:id="@+id/blackPlayerGlow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/glow_effect"
+                android:alpha="0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Control Panel (Center) -->
+    <LinearLayout
+        android:id="@+id/controlPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="@dimen/spacing_md"
+        android:background="@color/surface"
+        android:elevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Settings Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settingsButton"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="@string/settings_icon"
+            app:icon="@drawable/ic_settings"
+            app:iconTint="@color/accent"
+            app:iconSize="@dimen/icon_size_md"
+            android:layout_marginEnd="@dimen/spacing_sm" />
+
+        <!-- Pause/Resume Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pauseButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/pause_icon"
+            app:icon="@drawable/ic_pause"
+            app:iconSize="@dimen/icon_size_md"
+            app:backgroundTint="@color/accent"
+            android:layout_marginHorizontal="@dimen/spacing_sm" />
+
+        <!-- Reset Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/resetButton"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="@string/reset_icon"
+            app:icon="@drawable/ic_reset"
+            app:iconTint="@color/error"
+            app:iconSize="@dimen/icon_size_md"
+            android:layout_marginStart="@dimen/spacing_sm" />
+
+    </LinearLayout>
+
+    <!-- White Player Area (Bottom Half) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/whitePlayerCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        app:cardBackgroundColor="@color/white_player"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/controlPanel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <!-- White Player Label -->
+            <TextView
+                android:id="@+id/whitePlayerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/white_player"
+                android:textColor="@color/white_player_text"
+                android:textSize="@dimen/text_size_label"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="@dimen/spacing_xl"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- White Player Timer -->
+            <TextView
+                android:id="@+id/whitePlayerTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="05:00.0"
+                android:textColor="@color/white_player_text"
+                android:textSize="@dimen/text_size_timer"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.05"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- White Player Status -->
+            <TextView
+                android:id="@+id/whitePlayerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/your_turn"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body"
+                android:alpha="0.7"
+                android:layout_marginBottom="@dimen/spacing_xl"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Active Indicator (Glow Effect) -->
+            <View
+                android:id="@+id/whitePlayerGlow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/glow_effect"
+                android:alpha="0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Start Game Overlay -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/startOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/overlay_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xl"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/surface"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_xl"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_md" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_time"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body"
+                    android:layout_marginBottom="@dimen/spacing_lg" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/startButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:text="@string/start_game"
+                    android:textSize="18sp"
+                    app:cornerRadius="@dimen/button_corner_radius"
+                    app:backgroundTint="@color/accent" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

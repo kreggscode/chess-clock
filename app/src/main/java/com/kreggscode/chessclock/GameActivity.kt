@@ -1,37 +1,34 @@
 package com.kreggscode.chessclock
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.PowerManager
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.kreggscode.chessclock.databinding.ActivityMainBinding
+import com.kreggscode.chessclock.databinding.ActivityGameBinding
 
-class MainActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
     
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityGameBinding
     private lateinit var soundManager: SoundManager
     private var wakeLock: PowerManager.WakeLock? = null
     
     // Game state
     private enum class GameState {
-        NOT_STARTED, RUNNING, PAUSED, FINISHED
+        RUNNING, PAUSED, FINISHED
     }
     
     private enum class ActivePlayer {
-        NONE, WHITE, BLACK
+        WHITE, BLACK
     }
     
-    private var gameState = GameState.NOT_STARTED
-    private var activePlayer = ActivePlayer.NONE
+    private var gameState = GameState.RUNNING
+    private var activePlayer = ActivePlayer.WHITE
     
     // Timers
     private var whiteTimer: CountDownTimer? = null
@@ -39,38 +36,34 @@ class MainActivity : AppCompatActivity() {
     private var whiteTimeMillis: Long = 0
     private var blackTimeMillis: Long = 0
     
-    // Settings
-    private var timeMinutes = SettingsActivity.DEFAULT_TIME_MINUTES
-    
     // Warning thresholds
-    private val WARNING_THRESHOLD_MS = 60_000L // 1 minute
-    private val CRITICAL_THRESHOLD_MS = 10_000L // 10 seconds
+    private val WARNING_THRESHOLD_MS = 60_000L
+    private val CRITICAL_THRESHOLD_MS = 10_000L
     
     private var whiteWarningPlayed = false
     private var blackWarningPlayed = false
-    private var whiteCriticalPlayed = false
-    private var blackCriticalPlayed = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        // Make app fullscreen and immersive
         setupFullScreen()
-        
-        // Initialize sound manager
-        soundManager = SoundManager(this)
-        
-        // Acquire wake lock to keep screen on
         acquireWakeLock()
         
-        // Load settings
+        soundManager = SoundManager(this)
         loadSettings()
         
-        // Setup UI
+        // Get time from intent
+        val timeMinutes = intent.getIntExtra(SetupActivity.EXTRA_TIME_MINUTES, 5)
+        whiteTimeMillis = timeMinutes * 60_000L
+        blackTimeMillis = timeMinutes * 60_000L
+        
         setupClickListeners()
         updateUI()
+        
+        // Start with white's turn
+        startWhiteTimer()
     }
     
     private fun setupFullScreen() {
@@ -89,47 +82,31 @@ class MainActivity : AppCompatActivity() {
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(
             PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-            "ChessClock::WakeLock"
+            "ChessClock::GameWakeLock"
         )
-        wakeLock?.acquire(10*60*60*1000L) // 10 hours max
+        wakeLock?.acquire(10*60*60*1000L)
     }
     
     private fun loadSettings() {
         val prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE)
-        timeMinutes = prefs.getInt(SettingsActivity.KEY_TIME_MINUTES, SettingsActivity.DEFAULT_TIME_MINUTES)
-        
         soundManager.isSoundEnabled = prefs.getBoolean(SettingsActivity.KEY_SOUND_ENABLED, true)
         soundManager.isVibrationEnabled = prefs.getBoolean(SettingsActivity.KEY_VIBRATION_ENABLED, true)
         soundManager.isLowTimeWarningEnabled = prefs.getBoolean(SettingsActivity.KEY_LOW_TIME_WARNING, true)
-        
-        // Initialize time
-        whiteTimeMillis = timeMinutes * 60_000L
-        blackTimeMillis = timeMinutes * 60_000L
     }
     
     private fun setupClickListeners() {
-        // Start button
-        binding.startButton.setOnClickListener {
-            startGame()
-        }
-        
-        // White player area
-        binding.whitePlayerCard.setOnClickListener {
+        // White player area - tap to switch to black
+        binding.whitePlayerArea.setOnClickListener {
             if (gameState == GameState.RUNNING && activePlayer == ActivePlayer.WHITE) {
                 switchToBlack()
             }
         }
         
-        // Black player area
-        binding.blackPlayerCard.setOnClickListener {
+        // Black player area - tap to switch to white
+        binding.blackPlayerArea.setOnClickListener {
             if (gameState == GameState.RUNNING && activePlayer == ActivePlayer.BLACK) {
                 switchToWhite()
             }
-        }
-        
-        // Settings button
-        binding.settingsButton.setOnClickListener {
-            openSettings()
         }
         
         // Pause/Resume button
@@ -141,25 +118,11 @@ class MainActivity : AppCompatActivity() {
         binding.resetButton.setOnClickListener {
             showResetDialog()
         }
-    }
-    
-    private fun startGame() {
-        gameState = GameState.RUNNING
-        activePlayer = ActivePlayer.WHITE
         
-        // Hide start overlay
-        binding.startOverlay.visibility = View.GONE
-        
-        // Reset warning flags
-        whiteWarningPlayed = false
-        blackWarningPlayed = false
-        whiteCriticalPlayed = false
-        blackCriticalPlayed = false
-        
-        // Start white's timer
-        startWhiteTimer()
-        
-        updateUI()
+        // Back button
+        binding.backButton.setOnClickListener {
+            showExitDialog()
+        }
     }
     
     private fun startWhiteTimer() {
@@ -208,14 +171,14 @@ class MainActivity : AppCompatActivity() {
         soundManager.playClickSound()
         soundManager.vibrateClick()
         startWhiteTimer()
-        animateSwitch(isWhiteActive = true)
+        animatePlayerSwitch()
     }
     
     private fun switchToBlack() {
         soundManager.playClickSound()
         soundManager.vibrateClick()
         startBlackTimer()
-        animateSwitch(isWhiteActive = false)
+        animatePlayerSwitch()
     }
     
     private fun togglePause() {
@@ -225,17 +188,19 @@ class MainActivity : AppCompatActivity() {
                 whiteTimer?.cancel()
                 blackTimer?.cancel()
                 binding.pauseButton.setIconResource(R.drawable.ic_play)
-                updateUI()
+                binding.pausedOverlay.visibility = View.VISIBLE
+                binding.pausedText.visibility = View.VISIBLE
             }
             GameState.PAUSED -> {
                 gameState = GameState.RUNNING
                 binding.pauseButton.setIconResource(R.drawable.ic_pause)
+                binding.pausedOverlay.visibility = View.GONE
+                binding.pausedText.visibility = View.GONE
                 if (activePlayer == ActivePlayer.WHITE) {
                     startWhiteTimer()
                 } else {
                     startBlackTimer()
                 }
-                updateUI()
             }
             else -> {}
         }
@@ -246,35 +211,21 @@ class MainActivity : AppCompatActivity() {
             .setTitle(R.string.reset_dialog_title)
             .setMessage(R.string.reset_dialog_message)
             .setPositiveButton(R.string.reset_dialog_confirm) { _, _ ->
-                resetGame()
+                finish()
             }
             .setNegativeButton(R.string.reset_dialog_cancel, null)
             .show()
     }
     
-    private fun resetGame() {
-        // Cancel timers
-        whiteTimer?.cancel()
-        blackTimer?.cancel()
-        
-        // Reset state
-        gameState = GameState.NOT_STARTED
-        activePlayer = ActivePlayer.NONE
-        
-        // Reload settings and reset time
-        loadSettings()
-        
-        // Reset warning flags
-        whiteWarningPlayed = false
-        blackWarningPlayed = false
-        whiteCriticalPlayed = false
-        blackCriticalPlayed = false
-        
-        // Show start overlay
-        binding.startOverlay.visibility = View.VISIBLE
-        binding.pauseButton.setIconResource(R.drawable.ic_pause)
-        
-        updateUI()
+    private fun showExitDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Exit Game?")
+            .setMessage("Are you sure you want to exit? The game will be lost.")
+            .setPositiveButton("Exit") { _, _ ->
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
     
     private fun gameOver(winner: ActivePlayer) {
@@ -291,28 +242,17 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.black_wins)
         }
         
-        // Show winner dialog
         AlertDialog.Builder(this)
             .setTitle(winnerText)
-            .setMessage("Game Over!")
+            .setMessage("Time's up!")
             .setPositiveButton("New Game") { _, _ ->
-                resetGame()
+                finish()
+            }
+            .setNeutralButton("Exit") { _, _ ->
+                finishAffinity()
             }
             .setCancelable(false)
             .show()
-    }
-    
-    private fun openSettings() {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-    }
-    
-    override fun onResume() {
-        super.onResume()
-        loadSettings()
-        if (gameState == GameState.NOT_STARTED) {
-            updateUI()
-        }
     }
     
     private fun updateUI() {
@@ -324,10 +264,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateWhiteTime() {
         val minutes = (whiteTimeMillis / 60000).toInt()
         val seconds = ((whiteTimeMillis % 60000) / 1000).toInt()
-        val tenths = ((whiteTimeMillis % 1000) / 100).toInt()
-        binding.whitePlayerTime.text = String.format("%02d:%02d.%d", minutes, seconds, tenths)
+        binding.whitePlayerTime.text = String.format("%02d:%02d", minutes, seconds)
         
-        // Update color based on time
         val textColor = when {
             whiteTimeMillis <= CRITICAL_THRESHOLD_MS -> ContextCompat.getColor(this, R.color.error)
             whiteTimeMillis <= WARNING_THRESHOLD_MS -> ContextCompat.getColor(this, R.color.warning)
@@ -339,10 +277,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateBlackTime() {
         val minutes = (blackTimeMillis / 60000).toInt()
         val seconds = ((blackTimeMillis % 60000) / 1000).toInt()
-        val tenths = ((blackTimeMillis % 1000) / 100).toInt()
-        binding.blackPlayerTime.text = String.format("%02d:%02d.%d", minutes, seconds, tenths)
+        binding.blackPlayerTime.text = String.format("%02d:%02d", minutes, seconds)
         
-        // Update color based on time
         val textColor = when {
             blackTimeMillis <= CRITICAL_THRESHOLD_MS -> ContextCompat.getColor(this, R.color.error)
             blackTimeMillis <= WARNING_THRESHOLD_MS -> ContextCompat.getColor(this, R.color.warning)
@@ -354,53 +290,38 @@ class MainActivity : AppCompatActivity() {
     private fun updatePlayerStates() {
         when (activePlayer) {
             ActivePlayer.WHITE -> {
-                binding.whitePlayerStatus.text = getString(R.string.your_turn)
-                binding.blackPlayerStatus.text = getString(R.string.waiting)
-                binding.whitePlayerCard.alpha = 1.0f
-                binding.blackPlayerCard.alpha = 0.6f
+                binding.whitePlayerArea.alpha = 1.0f
+                binding.blackPlayerArea.alpha = 0.5f
+                binding.whiteTapHint.alpha = 1.0f
+                binding.blackTapHint.alpha = 0f
             }
             ActivePlayer.BLACK -> {
-                binding.whitePlayerStatus.text = getString(R.string.waiting)
-                binding.blackPlayerStatus.text = getString(R.string.your_turn)
-                binding.whitePlayerCard.alpha = 0.6f
-                binding.blackPlayerCard.alpha = 1.0f
+                binding.whitePlayerArea.alpha = 0.5f
+                binding.blackPlayerArea.alpha = 1.0f
+                binding.whiteTapHint.alpha = 0f
+                binding.blackTapHint.alpha = 1.0f
             }
-            ActivePlayer.NONE -> {
-                binding.whitePlayerStatus.text = getString(R.string.game_ready)
-                binding.blackPlayerStatus.text = getString(R.string.game_ready)
-                binding.whitePlayerCard.alpha = 1.0f
-                binding.blackPlayerCard.alpha = 1.0f
-            }
-        }
-        
-        if (gameState == GameState.PAUSED) {
-            binding.whitePlayerStatus.text = getString(R.string.game_paused)
-            binding.blackPlayerStatus.text = getString(R.string.game_paused)
         }
     }
     
-    private fun animateSwitch(isWhiteActive: Boolean) {
-        val glowView = if (isWhiteActive) binding.whitePlayerGlow else binding.blackPlayerGlow
-        val otherGlowView = if (isWhiteActive) binding.blackPlayerGlow else binding.whitePlayerGlow
-        
-        // Fade out other glow
-        ObjectAnimator.ofFloat(otherGlowView, "alpha", otherGlowView.alpha, 0f).apply {
-            duration = 200
-            start()
+    private fun animatePlayerSwitch() {
+        val activeArea = if (activePlayer == ActivePlayer.WHITE) {
+            binding.whitePlayerArea
+        } else {
+            binding.blackPlayerArea
         }
         
-        // Pulse glow effect
-        ObjectAnimator.ofFloat(glowView, "alpha", 0f, 0.3f, 0f).apply {
-            duration = 400
-            interpolator = AccelerateDecelerateInterpolator()
+        // Quick flash animation
+        ObjectAnimator.ofFloat(activeArea, "alpha", 0.5f, 1.0f, 0.5f, 1.0f).apply {
+            duration = 200
             start()
         }
     }
     
     private fun checkWhiteWarnings() {
-        if (whiteTimeMillis <= CRITICAL_THRESHOLD_MS && !whiteCriticalPlayed) {
+        if (whiteTimeMillis <= CRITICAL_THRESHOLD_MS && !whiteWarningPlayed) {
             soundManager.playCriticalSound()
-            whiteCriticalPlayed = true
+            whiteWarningPlayed = true
         } else if (whiteTimeMillis <= WARNING_THRESHOLD_MS && !whiteWarningPlayed) {
             soundManager.playWarningSound()
             soundManager.vibrateWarning()
@@ -409,9 +330,9 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun checkBlackWarnings() {
-        if (blackTimeMillis <= CRITICAL_THRESHOLD_MS && !blackCriticalPlayed) {
+        if (blackTimeMillis <= CRITICAL_THRESHOLD_MS && !blackWarningPlayed) {
             soundManager.playCriticalSound()
-            blackCriticalPlayed = true
+            blackWarningPlayed = true
         } else if (blackTimeMillis <= WARNING_THRESHOLD_MS && !blackWarningPlayed) {
             soundManager.playWarningSound()
             soundManager.vibrateWarning()
@@ -425,5 +346,9 @@ class MainActivity : AppCompatActivity() {
         blackTimer?.cancel()
         soundManager.release()
         wakeLock?.release()
+    }
+    
+    override fun onBackPressed() {
+        showExitDialog()
     }
 }
